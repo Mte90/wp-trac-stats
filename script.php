@@ -33,9 +33,8 @@ function count_tickets($html,) {
     $doc = new DOMDocument;
     $doc->preserveWhiteSpace = false;
     @$doc->loadHTML($html);
-    $tickets = array();
+    $tickets = array('_date'=>$today,'newticket'=>0,'closedticket'=>0,'reopenedticket'=>0,'batchmodify'=>0,'changeset'=>0,'milestone'=>0,'wiki'=>0);
     $items = $doc->getElementById('content')->getElementsByTagName('dt');
-    $tickets['date'] = $today;
     foreach ($items as $item) {
         $class = $item->getAttribute('class');
         if (!isset($tickets[$class])) {
@@ -48,7 +47,7 @@ function count_tickets($html,) {
     return $tickets;
 }
 
-$csv = array( array('date','newticket','closedticket','reopenedticket','batchmodify','changeset','milestone') );
+$csv = array( array('date','newticket','closedticket','reopenedticket','batchmodify','changeset','milestone','wiki') );
 
 echo "1 page " . $today . " https://core.trac.wordpress.org/timeline\n";
 $request = file_get_contents('https://core.trac.wordpress.org/timeline?from=' . $today . '&daysback=90&authors=&ticket=on&sfp_email=&sfph_mail=&update=Update', false, get_user_agent());
