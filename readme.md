@@ -1,4 +1,5 @@
 # WP Trac Stats
+[![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)   
 
 With this project we are trying to understand the number of tickets from WordPress Trac with a period of 3 months from 2004 when the first ticket was created.
 
