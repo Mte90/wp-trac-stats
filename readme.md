@@ -3,7 +3,11 @@
 
 A way to understand how much the core contributions to WordPress impact with numbers to contributors experience.
 
-Check the blog post for the [full analysis](https://daniele.tech/?p=4845&preview=true)!
+Check the blog post for the [full analysis](https://daniele.tech/wordpress-core-contributions-by-tickets-numbers/)!
+
+## How to run
+
+`./tickets-analysis.php > report.txt`
 
 ## How to get the data
 
