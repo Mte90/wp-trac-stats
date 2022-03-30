@@ -65,7 +65,7 @@ for ($i = 0; $i <= $requests_loop; $i++) {
     sleep(4);
 }
 
-$fp = fopen('report.csv', 'w');
+$fp = fopen('totals-for-months.csv', 'w');
 foreach ($csv as $fields) {
     fputcsv($fp, $fields);
 }
