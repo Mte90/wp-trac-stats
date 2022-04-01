@@ -22,13 +22,24 @@ function average_status_date( $resolution, $echo = true ) {
     foreach ($rows as &$row) {
         if ( $row['Resolution'] === $resolution ) {
             $i += 1;
-            $intervals[] = abs(strtotime($row['Created']) - strtotime($row['Modified']));
+            $enddate = strtotime($row['Modified']);
+            if ( empty( $resolution ) ) {
+                $enddate = strtotime(date("Y-m-d"));
+            }
+
+            $sub = abs(strtotime($row['Created']) - $enddate);
+
+            if ( $sub === 0 ){
+                $sub = 1;
+            }
+            $intervals[] = $sub;
         }
     }
 
     $average = average_in_days( $intervals );
 
     $status = ' take an average of ';
+
     if ( empty( $resolution ) ) {
         $resolution = 'opened';
         $status = ' without status changing ';
@@ -153,7 +164,7 @@ while (($row = fgetcsv($fileHandle, 0, ",")) !== FALSE) {
     $iterator += 1;
 }
 
-echo "DISCLAIMER!";
+echo "DISCLAIMER!\n";
 echo "It is not possible to get the closed date of a ticket we will use the last modified date that is not the ideal solution, so the average in reality could be bigger!\n";
 echo "Also it is not possible to know who closed the ticket with the author of the patch!\n";
 echo "Don't forget that a ticket can have more then 1 changeset that will close it!\n\n";
