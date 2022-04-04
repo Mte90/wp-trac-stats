@@ -83,6 +83,8 @@ function components_numbers() {
             echo ' Days Average for closing ' . average_in_days( $components_intervals[$index]['wontfix'] ) . ' days' . "\n";
         }
     }
+
+    file_put_contents( './json/components_numbers.json', json_encode( $components, JSON_PRETTY_PRINT ) );
 }
 
 function owner_numbers() {
@@ -106,6 +108,8 @@ function owner_numbers() {
             echo ' ' . $owner . " has " . $value['total'] . " tickets, with " . $value['opened'] . " opened tickets, " . $value['invalid'] . " invalid tickets and " . $value['fixed'] . " closed tickets\n";
         }
     }
+
+    file_put_contents( './json//owner_numbers.json', json_encode( $owners, JSON_PRETTY_PRINT ) );
 }
 
 function various_keywords_counts( $keyword ) {
@@ -124,6 +128,40 @@ function various_keywords_counts( $keyword ) {
     echo $i . ' Tickets with keyword "' . $keyword . '" average waiting time for closing ' . $average . ' days' . "\n";
 
     return $average;
+}
+
+function tickets_status_by_year() {
+    global $rows;
+    $i = 0;
+    $years = range( '2004', date('Y') );
+    $totals = array();
+    foreach ($rows as &$row) {
+        $year = explode( '-', $row[ 'Created' ] );
+        $year = $year[0];
+        $resolution = $row['Resolution'];
+
+        if ( empty( $resolution ) ) {
+            $resolution = 'opened';
+        }
+
+        if ( $resolution === 'reported-upstream' ) {
+            continue;
+        }
+
+        if ( !isset( $totals[ $year ][ $resolution ] ) ) {
+            $totals[ $year ][ $resolution ] = 1;
+        } else {
+            $totals[ $year ][ $resolution ] += 1;
+        }
+    }
+
+    foreach ($totals as $year => $date) {
+        foreach( $date as $status => $number ) {
+            echo $year . ': ' . $number . ' Tickets "' . $status . '" as today' . "\n";
+        }
+    }
+
+    file_put_contents( './json/tickets_status_by_year.json', json_encode( $totals, JSON_PRETTY_PRINT ) );
 }
 
 function totals_for_months() {
@@ -202,6 +240,10 @@ owner_numbers();
 echo "\nTickets managed every 3 months average";
 echo "\n" . '-----------' . "\n\n";
 totals_for_months();
+
+echo "\nTickets status by year";
+echo "\n" . '-----------' . "\n\n";
+tickets_status_by_year();
 
 echo "\n\nFinished\n";
 $end_time = microtime(true);
