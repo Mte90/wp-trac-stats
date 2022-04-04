@@ -173,6 +173,13 @@ echo "Don't forget that a ticket can have more then 1 changeset that will close 
 echo "\n" . '-----------' . "\n\n";
 echo 'Total public and alive tickets ' . count( $rows ) . ' on estimated ' . $rows[ count( $rows ) -1 ]['id'] . ' total created tickets with missing ' .  ( $rows[ count( $rows ) -1 ]['id'] - count( $rows ) ) . " tickets\n";
 echo 'The oldest ticket is ' . $rows[0]['id'] . ' created on ' . $rows[0]['Created'] . "\n";
+foreach ($rows as &$row) {
+    if ( $row['Resolution'] == '' ) {
+        echo 'The oldest ticket still opened is ' . $row['id'] . ' created on ' . $row['Created'] . "\n";
+
+        break;
+    }
+}
 
 echo "\n" . '-----------' . "\n\n";
 average_status_date( 'fixed' );
