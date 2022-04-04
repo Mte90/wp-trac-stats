@@ -23,6 +23,10 @@ wget -O tickets.csv "https://core.trac.wordpress.org/query?status=accepted&statu
 This command will download the whole tickets collection (excluding the hidden for security reasons and spam removed during the years).  
 **Also the "Last Modified date/changetime" doesn't means the closed date** as it is not possible to get this value from the export of [Trac](https://trac.edgewall.org/).
 
-## TODO
+## Where are the JSONs?
+
+After executing the script in the json folder you will find them.
+
+## TODO (maybe)
 
 * Script to generate analysis using https://github.com/WordPress/wordpress-develop/graphs/contributors automatically
