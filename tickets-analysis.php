@@ -91,6 +91,7 @@ function owner_numbers() {
     global $rows;
 
     $owners = array();
+    $total_tickets_closed = 0;
     foreach ($rows as &$row) {
         $owners[$row['Owner']] = array(
             'total' => isset($owners[$row['Owner']]['total']) ? $owners[$row['Owner']]['total'] += 1 : 1,
@@ -98,18 +99,34 @@ function owner_numbers() {
             'invalid' => isset($owners[$row['Owner']]['invalid']) && $row['Resolution'] === '' ? $owners[$row['Owner']]['invalid'] += 1 : 1,
             'opened' => isset($owners[$row['Owner']]['opened']) && $row['Resolution'] === '' ? $owners[$row['Owner']]['opened'] += 1 : 1,
         );
+
+        if ( $row['Resolution'] === 'fixed' ) {
+            $total_tickets_closed += 1;
+        }
     }
 
     echo "\nOwners numbers";
     echo "\n" . '-----' . "\n\n";
     arsort( $owners );
+    $total_owners = 0;
+    $toprint = '';
     foreach ( $owners as $owner => $value ) {
         if ( $value['total'] > 20 ) {
-            echo ' ' . $owner . " has " . $value['total'] . " tickets, with " . $value['opened'] . " opened tickets, " . $value['invalid'] . " invalid tickets and " . $value['fixed'] . " closed tickets\n";
+            $total_owners += 1;
+            $toprint .= ' ' . $owner . " has " . $value['total'] . " tickets, with " . $value['opened'] . " opened tickets, " . $value['invalid'] . " invalid tickets and " . $value['fixed'] . " closed tickets\n";
         }
     }
 
-    file_put_contents( './json//owner_numbers.json', json_encode( $owners, JSON_PRETTY_PRINT ) );
+    $average_by_owner = round( $total_tickets_closed / $total_owners, 1 );
+    $years_range = range( 2004, date( 'Y' ) );
+    $howmanyyears = count($years_range) + 1;
+    $howmanyweeks = $howmanyyears * 52;
+    // Closed tickets remove the owner so we don't have real data
+    echo "\n" . 'Average of tickets closed (' . $total_tickets_closed . ') per ' . $total_owners . ' Owners ' . $average_by_owner . ' that means ' . round($average_by_owner/$howmanyweeks, 3) . ' tickets closed by owner per week (' . $howmanyweeks . ' weeks since 2004)' . "\n";
+
+    echo $toprint;
+
+    file_put_contents( './json/owner_numbers.json', json_encode( $owners, JSON_PRETTY_PRINT ) );
 }
 
 function various_keywords_counts( $keyword ) {
