@@ -111,8 +111,8 @@ function owner_numbers() {
     $total_owners = 0;
     $toprint = '';
     foreach ( $owners as $owner => $value ) {
+        $total_owners += 1;
         if ( $value['total'] > 20 ) {
-            $total_owners += 1;
             $toprint .= ' ' . $owner . " has " . $value['total'] . " tickets, with " . $value['opened'] . " opened tickets, " . $value['invalid'] . " invalid tickets and " . $value['fixed'] . " closed tickets\n";
         }
     }
@@ -122,7 +122,7 @@ function owner_numbers() {
     $howmanyyears = count($years_range) + 1;
     $howmanyweeks = $howmanyyears * 52;
     // Closed tickets remove the owner so we don't have real data
-    echo "\n" . 'Average of tickets closed (' . $total_tickets_closed . ') per ' . $total_owners . ' Owners ' . $average_by_owner . ' that means ' . round($average_by_owner/$howmanyweeks, 3) . ' tickets closed by owner per week (' . $howmanyweeks . ' weeks since 2004)' . "\n";
+    echo 'Average of tickets closed (' . $total_tickets_closed . ') per ' . $total_owners . ' Owners ' . $average_by_owner . ' that means ' . round($average_by_owner/$howmanyweeks, 3) . ' tickets closed by owner per week (' . $howmanyweeks . ' weeks since 2004)' . "\n";
 
     echo $toprint;
 
