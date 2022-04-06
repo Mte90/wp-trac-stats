@@ -58,7 +58,12 @@ function components_numbers() {
     $components = array();
     $components_intervals = array();
     foreach ($rows as &$row) {
-        $components[$row['Component']][$row['Resolution']] = isset($components[$row['Component']][$row['Resolution']]) ? $components[$row['Component']][$row['Resolution']] += 1 : 1;
+        $resolution = $row['Resolution'];
+        if ( empty( $resolution ) ) {
+            $resolution = 'opened';
+        }
+
+        $components[$row['Component']][$resolution] = isset($components[$row['Component']][$row['Resolution']]) ? $components[$row['Component']][$row['Resolution']] += 1 : 1;
         $components_intervals[$row['Component']][$row['Resolution']][] = abs(strtotime($row['Created']) - strtotime($row['Modified']));
 ;
     }
